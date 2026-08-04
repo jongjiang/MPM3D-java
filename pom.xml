@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    ============================================================
+    MPM3D-Java
+    Material Point Method (MPM)
+    Java 21 / Maven
+    作者：ChatGPT (重新設計版本)
+    說明：
+        本專案採用 Maven 建置管理。
+        本章僅建立基本架構，後續章節再加入各模組。
+    ============================================================
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+            http://maven.apache.org/POM/4.0.0
+            https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Maven Model Version -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 專案資訊 -->
+    <groupId>tw.edu.mpm</groupId>
+
+    <artifactId>MPM3D-Java</artifactId>
+
+    <version>1.0.0</version>
+
+    <packaging>jar</packaging>
+
+    <name>MPM3D Java</name>
+
+    <description>
+        Material Point Method in Java
+    </description>
+
+    <url>https://github.com/yourname/mpm3d-java</url>
+
+    <!-- Java版本 -->
+    <properties>
+
+        <!-- UTF-8 -->
+        <project.build.sourceEncoding>
+            UTF-8
+        </project.build.sourceEncoding>
+
+        <!-- Java 版本 -->
+        <maven.compiler.source>21</maven.compiler.source>
+
+        <maven.compiler.target>21</maven.compiler.target>
+
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- JUnit -->
+        <junit.version>5.10.2</junit.version>
+
+    </properties>
+
+    <!-- ===================================================== -->
+    <!-- Dependencies -->
+    <!-- ===================================================== -->
+
+    <dependencies>
+
+        <!--
+            Apache Commons Math
+            用於矩陣運算
+            後續可逐步替換成本專案自行撰寫的 Matrix3
+        -->
+        <dependency>
+
+            <groupId>org.apache.commons</groupId>
+
+            <artifactId>commons-math3</artifactId>
+
+            <version>3.6.1</version>
+
+        </dependency>
+
+        <!--
+            JUnit5
+            單元測試
+        -->
+        <dependency>
+
+            <groupId>org.junit.jupiter</groupId>
+
+            <artifactId>junit-jupiter</artifactId>
+
+            <version>${junit.version}</version>
+
+            <scope>test</scope>
+
+        </dependency>
+
+    </dependencies>
+
+    <!-- ===================================================== -->
+    <!-- Build -->
+    <!-- ===================================================== -->
+
+    <build>
+
+        <plugins>
+
+            <!-- Java Compiler -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-compiler-plugin</artifactId>
+
+                <version>3.13.0</version>
+
+                <configuration>
+
+                    <release>21</release>
+
+                    <encoding>UTF-8</encoding>
+
+                </configuration>
+
+            </plugin>
+
+            <!-- 執行 Main -->
+
+            <plugin>
+
+                <groupId>org.codehaus.mojo</groupId>
+
+                <artifactId>exec-maven-plugin</artifactId>
+
+                <version>3.4.1</version>
+
+                <configuration>
+
+                    <mainClass>
+                        tw.edu.mpm.Main
+                    </mainClass>
+
+                </configuration>
+
+            </plugin>
+
+            <!-- 建立可執行 Jar -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-jar-plugin</artifactId>
+
+                <version>3.4.2</version>
+
+                <configuration>
+
+                    <archive>
+
+                        <manifest>
+
+                            <mainClass>
+                                tw.edu.mpm.Main
+                            </mainClass>
+
+                        </manifest>
+
+                    </archive>
+
+                </configuration>
+
+            </plugin>
+
+            <!-- 單元測試 -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-surefire-plugin</artifactId>
+
+                <version>3.5.0</version>
+
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
