@@ -6,240 +6,678 @@ package tw.edu.mpm.math;
  *
  * Matrix3.java
  *
- * 三階方陣 (3 x 3 Matrix)
+ * 三維 3×3 矩陣
  *
- * 用於：
+ * 高效能版本：
  *
- *     1. Deformation Gradient F
- *     2. Stress Tensor
- *     3. Strain Tensor
- *     4. Velocity Gradient
+ * 1. 使用 9 個 double 儲存
+ * 2. 避免 double[][]
+ * 3. 避免 Array Index
+ * 4. 適合 MPM/FEM 大量運算
  *
+ * ------------------------------------------------------------
  *
- * 矩陣形式：
- *
- *       | a00 a01 a02 |
- *   A = | a10 a11 a12 |
- *       | a20 a21 a22 |
- *
+ *      | xx  xy  xz |
+ *  A = | yx  yy  yz |
+ *      | zx  zy  zz |
  *
  * ============================================================
  */
-
 public class Matrix3 {
 
 	/*
 	 * ========================================================
-	 * 矩陣資料
+	 * Matrix Elements
 	 * ========================================================
 	 */
 
-	private double[][] m;
+	public double xx;
+	public double xy;
+	public double xz;
+
+	public double yx;
+	public double yy;
+	public double yz;
+
+	public double zx;
+	public double zy;
+	public double zz;
 
 	/*
 	 * ========================================================
-	 * 建構子
+	 * Constructors
 	 * ========================================================
 	 */
 
 	/**
 	 * 建立零矩陣
-	 *
-	 * [0]
 	 */
 	public Matrix3() {
-
-		m = new double[3][3];
-
 	}
 
 	/**
 	 * 建立指定矩陣
-	 *
-	 * @param data 3x3 array
+	 */
+	public Matrix3(double xx, double xy, double xz, double yx, double yy, double yz, double zx, double zy, double zz) {
+
+		this.xx = xx;
+		this.xy = xy;
+		this.xz = xz;
+
+		this.yx = yx;
+		this.yy = yy;
+		this.yz = yz;
+
+		this.zx = zx;
+		this.zy = zy;
+		this.zz = zz;
+	}
+
+	/**
+	 * 使用 double[3][3] 建立矩陣
+	 */
+	public Matrix3(double[][] m) {
+
+		xx = m[0][0];
+		xy = m[0][1];
+		xz = m[0][2];
+
+		yx = m[1][0];
+		yy = m[1][1];
+		yz = m[1][2];
+
+		zx = m[2][0];
+		zy = m[2][1];
+		zz = m[2][2];
+	}
+
+	/**
+	 * Copy Constructor
+	 */
+	public Matrix3(Matrix3 m) {
+
+		xx = m.xx;
+		xy = m.xy;
+		xz = m.xz;
+
+		yx = m.yx;
+		yy = m.yy;
+		yz = m.yz;
+
+		zx = m.zx;
+		zy = m.zy;
+		zz = m.zz;
+	}
+
+	/*
+	 * ========================================================
+	 * Set Matrix
+	 * ========================================================
 	 */
 
-	public Matrix3(double[][] data) {
+	/**
+	 * 一次設定全部元素
+	 */
+	public Matrix3 set(double xx, double xy, double xz, double yx, double yy, double yz, double zx, double zy, double zz) {
 
-		m = new double[3][3];
+		this.xx = xx;
+		this.xy = xy;
+		this.xz = xz;
 
-		for (int i = 0; i < 3; i++) {
+		this.yx = yx;
+		this.yy = yy;
+		this.yz = yz;
 
-			for (int j = 0; j < 3; j++) {
+		this.zx = zx;
+		this.zy = zy;
+		this.zz = zz;
 
-				m[i][j] = data[i][j];
+		return this;
+	}
 
+	/**
+	 * 複製另一個 Matrix3
+	 */
+	public Matrix3 set(Matrix3 m) {
+
+		xx = m.xx;
+		xy = m.xy;
+		xz = m.xz;
+
+		yx = m.yx;
+		yy = m.yy;
+		yz = m.yz;
+
+		zx = m.zx;
+		zy = m.zy;
+		zz = m.zz;
+
+		return this;
+	}
+
+	/**
+	 * 全部設為 0
+	 */
+	public Matrix3 zero() {
+
+		xx = xy = xz = 0.0;
+		yx = yy = yz = 0.0;
+		zx = zy = zz = 0.0;
+
+		return this;
+	}
+
+	/**
+	 * 設為單位矩陣
+	 */
+	public Matrix3 identity() {
+
+		xx = 1.0;
+		xy = 0.0;
+		xz = 0.0;
+
+		yx = 0.0;
+		yy = 1.0;
+		yz = 0.0;
+
+		zx = 0.0;
+		zy = 0.0;
+		zz = 1.0;
+
+		return this;
+	}
+
+	/**
+	 * 建立單位矩陣
+	 */
+	public static Matrix3 Identity() {
+
+		return new Matrix3().identity();
+	}
+
+	/**
+	 * 建立零矩陣
+	 */
+	public static Matrix3 Zero() {
+
+		return new Matrix3();
+	}
+
+	/*
+	 * ========================================================
+	 * 元素存取 (Element Access)
+	 * ========================================================
+	 */
+
+	/**
+	 * 取得矩陣元素
+	 *
+	 * @param row 列 (0~2)
+	 * @param col 行 (0~2)
+	 * @return 元素值
+	 */
+	public double get(int row, int col) {
+
+		switch (row) {
+
+		case 0:
+			switch (col) {
+			case 0:
+				return xx;
+			case 1:
+				return xy;
+			case 2:
+				return xz;
 			}
+			break;
 
+		case 1:
+			switch (col) {
+			case 0:
+				return yx;
+			case 1:
+				return yy;
+			case 2:
+				return yz;
+			}
+			break;
+
+		case 2:
+			switch (col) {
+			case 0:
+				return zx;
+			case 1:
+				return zy;
+			case 2:
+				return zz;
+			}
+			break;
 		}
 
+		throw new IndexOutOfBoundsException("Matrix3 index (" + row + "," + col + ") out of range.");
 	}
 
 	/**
-	 * 複製矩陣
+	 * 設定矩陣元素
+	 *
+	 * @param row 列
+	 * @param col 行
+	 * @param value 新值
+	 */
+	public void set(int row, int col, double value) {
+
+		switch (row) {
+
+		case 0:
+			switch (col) {
+			case 0:
+				xx = value;
+				return;
+			case 1:
+				xy = value;
+				return;
+			case 2:
+				xz = value;
+				return;
+			}
+			break;
+
+		case 1:
+			switch (col) {
+			case 0:
+				yx = value;
+				return;
+			case 1:
+				yy = value;
+				return;
+			case 2:
+				yz = value;
+				return;
+			}
+			break;
+
+		case 2:
+			switch (col) {
+			case 0:
+				zx = value;
+				return;
+			case 1:
+				zy = value;
+				return;
+			case 2:
+				zz = value;
+				return;
+			}
+			break;
+		}
+
+		throw new IndexOutOfBoundsException("Matrix3 index (" + row + "," + col + ") out of range.");
+	}
+
+	/*
+	 * ========================================================
+	 * Copy
+	 * ========================================================
 	 */
 
-	public Matrix3(Matrix3 other) {
+	/**
+	 * 建立完整複本
+	 */
+	public Matrix3 copy() {
 
-		this(other.m);
+		return new Matrix3(this);
+	}
+
+	/**
+	 * 從另一矩陣複製資料
+	 */
+	public Matrix3 copyFrom(Matrix3 m) {
+
+		xx = m.xx;
+		xy = m.xy;
+		xz = m.xz;
+
+		yx = m.yx;
+		yy = m.yy;
+		yz = m.yz;
+
+		zx = m.zx;
+		zy = m.zy;
+		zz = m.zz;
+
+		return this;
+	}
+
+	/*
+	 * ========================================================
+	 * Clear / Reset
+	 * ========================================================
+	 */
+
+	/**
+	 * 清除矩陣 (全部設為 0)
+	 */
+	public void clear() {
+
+		xx = xy = xz = 0.0;
+		yx = yy = yz = 0.0;
+		zx = zy = zz = 0.0;
+	}
+
+	/**
+	 * 是否為零矩陣
+	 */
+	public boolean isZero() {
+
+		return xx == 0.0 && xy == 0.0 && xz == 0.0 &&
+
+				yx == 0.0 && yy == 0.0 && yz == 0.0 &&
+
+				zx == 0.0 && zy == 0.0 && zz == 0.0;
+	}
+
+	/*
+	 * ========================================================
+	 * Matrix Property
+	 * ========================================================
+	 */
+
+	/**
+	 * Trace
+	 *
+	 * tr(A)
+	 */
+	public double trace() {
+
+		return xx + yy + zz;
+	}
+
+	/**
+	 * 是否為單位矩陣
+	 */
+	public boolean isIdentity() {
+
+		return xx == 1.0 && yy == 1.0 && zz == 1.0 &&
+
+				xy == 0.0 && xz == 0.0 && yx == 0.0 && yz == 0.0 && zx == 0.0 && zy == 0.0;
+	}
+
+	/*
+	 * ========================================================
+	 * Array Convert
+	 * ========================================================
+	 */
+
+	/**
+	 * 轉成 double[3][3]
+	 *
+	 * (僅供 IO 或相容舊程式使用)
+	 */
+	public double[][] toArray() {
+
+		return new double[][] {
+
+				{ xx, xy, xz },
+
+				{ yx, yy, yz },
+
+				{ zx, zy, zz }
+
+		};
+	}
+
+	/*
+	 * ========================================================
+	 * Matrix Invariants
+	 *
+	 * 矩陣不變量
+	 * ========================================================
+	 */
+
+	/**
+	 * Trace
+	 *
+	 * tr(A)=Axx+Ayy+Azz
+	 *
+	 * 常用於：
+	 *
+	 * 1. 體積應變
+	 * 2. Stress invariant
+	 * 3. Drucker-Prager
+	 */
+	public double traceValue() {
+
+		return xx + yy + zz;
+	}
+
+	/**
+	 * 第二不變量 I2
+	 *
+	 * I2 =
+	 *
+	 * 1/2[(trA)^2-tr(A^2)]
+	 *
+	 */
+	public double secondInvariant() {
+
+		double tr = traceValue();
+
+		double a2 = xx * xx + xy * yx + xz * zx +
+
+				yx * xy + yy * yy + yz * zy +
+
+				zx * xz + zy * yz + zz * zz;
+
+		return 0.5 * (tr * tr - a2);
+	}
+
+	/**
+	 * Determinant
+	 *
+	 * |A|
+	 *
+	 * 用於：
+	 *
+	 * deformation gradient J
+	 *
+	 */
+	public double determinant() {
+
+		return
+
+		xx * (yy * zz - yz * zy)
+
+				- xy * (yx * zz - yz * zx)
+
+				+ xz * (yx * zy - yy * zx);
 
 	}
 
 	/*
 	 * ========================================================
-	 * 元素存取
+	 * Norm
 	 * ========================================================
 	 */
 
-	public double get(int i, int j) {
+	/**
+	 * Frobenius Norm
+	 *
+	 * ||A|| =
+	 * sqrt(sum(Aij^2))
+	 */
+	public double frobeniusNorm() {
 
-		return m[i][j];
+		return Math.sqrt(
+
+				xx * xx + xy * xy + xz * xz +
+
+						yx * yx + yy * yy + yz * yz +
+
+						zx * zx + zy * zy + zz * zz
+
+		);
 
 	}
 
-	public void set(int i, int j, double value) {
+	/**
+	 * 最大絕對元素
+	 */
+	public double maxAbs() {
 
-		m[i][j] = value;
+		double max = Math.abs(xx);
+
+		max = Math.max(max, Math.abs(xy));
+		max = Math.max(max, Math.abs(xz));
+
+		max = Math.max(max, Math.abs(yx));
+		max = Math.max(max, Math.abs(yy));
+		max = Math.max(max, Math.abs(yz));
+
+		max = Math.max(max, Math.abs(zx));
+		max = Math.max(max, Math.abs(zy));
+		max = Math.max(max, Math.abs(zz));
+
+		return max;
 
 	}
 
 	/*
 	 * ========================================================
-	 * 基本矩陣運算
+	 * Symmetry Check
 	 * ========================================================
 	 */
 
 	/**
+	 * 判斷是否為對稱矩陣
+	 *
+	 * A=A^T
+	 *
+	 */
+	public boolean isSymmetric(double tolerance) {
+
+		return
+
+		Math.abs(xy - yx) < tolerance
+
+				&&
+
+				Math.abs(xz - zx) < tolerance
+
+				&&
+
+				Math.abs(yz - zy) < tolerance;
+
+	}
+
+	/**
+	 * 對稱誤差
+	 *
+	 * ||A-AT||
+	 */
+	public double symmetryError() {
+
+		double a = xy - yx;
+
+		double b = xz - zx;
+
+		double c = yz - zy;
+
+		return Math.sqrt(a * a + b * b + c * c);
+
+	}
+
+	/*
+	 * ========================================================
+	 * Convert
+	 * ========================================================
+	 */
+
+	/**
+	 * 複製到 double array
+	 *
+	 * 只供：
+	 *
+	 * 1. IO
+	 * 2. Debug
+	 * 3. 舊程式相容
+	 *
+	 */
+	public void copyToArray(double[][] out) {
+
+		out[0][0] = xx;
+		out[0][1] = xy;
+		out[0][2] = xz;
+
+		out[1][0] = yx;
+		out[1][1] = yy;
+		out[1][2] = yz;
+
+		out[2][0] = zx;
+		out[2][1] = zy;
+		out[2][2] = zz;
+
+	}
+
+	/**
+	 * 建立 double array
+	 */
+	public double[][] array() {
+
+		return new double[][] {
+
+				{ xx, xy, xz },
+
+				{ yx, yy, yz },
+
+				{ zx, zy, zz }
+
+		};
+
+	}
+
+	/*
+	 * ========================================================
+	 * Basic Matrix Operations
 	 *
 	 * A+B
-	 *
-	 */
-
-	public Matrix3 add(Matrix3 B) {
-
-		Matrix3 result = new Matrix3();
-
-		for (int i = 0; i < 3; i++) {
-
-			for (int j = 0; j < 3; j++) {
-
-				result.m[i][j] = this.m[i][j] + B.m[i][j];
-
-			}
-
-		}
-
-		return result;
-
-	}
-
-	/**
-	 *
 	 * A-B
-	 *
-	 */
-
-	public Matrix3 subtract(Matrix3 B) {
-
-		Matrix3 result = new Matrix3();
-
-		for (int i = 0; i < 3; i++) {
-
-			for (int j = 0; j < 3; j++) {
-
-				result.m[i][j] = this.m[i][j] - B.m[i][j];
-
-			}
-
-		}
-
-		return result;
-
-	}
-
-	/**
-	 *
-	 * A*c
-	 *
-	 */
-
-	public Matrix3 multiply(double scalar) {
-
-		Matrix3 result = new Matrix3();
-
-		for (int i = 0; i < 3; i++) {
-
-			for (int j = 0; j < 3; j++) {
-
-				result.m[i][j] = m[i][j] * scalar;
-
-			}
-
-		}
-
-		return result;
-
-	}
-
-	/*
-	 * ========================================================
-	 * 矩陣乘法
 	 * ========================================================
 	 */
 
 	/**
+	 * 矩陣加法
 	 *
-	 * C=A*B
+	 * C=A+B
 	 *
 	 */
+	public Matrix3 add(Matrix3 b) {
 
-	public Matrix3 multiply(Matrix3 B) {
+		return new Matrix3(
 
-		Matrix3 result = new Matrix3();
+				xx + b.xx, xy + b.xy, xz + b.xz,
 
-		for (int i = 0; i < 3; i++) {
+				yx + b.yx, yy + b.yy, yz + b.yz,
 
-			for (int j = 0; j < 3; j++) {
+				zx + b.zx, zy + b.zy, zz + b.zz
 
-				double sum = 0.0;
-
-				for (int k = 0; k < 3; k++) {
-
-					sum += this.m[i][k] * B.m[k][j];
-
-				}
-
-				result.m[i][j] = sum;
-
-			}
-
-		}
-
-		return result;
+		);
 
 	}
 
-	/*
-	 * ========================================================
-	 * 矩陣與Vector乘法
-	 * ========================================================
-	 */
-
 	/**
+	 * 矩陣減法
 	 *
-	 * y=A*x
-	 *
+	 * C=A-B
 	 */
+	public Matrix3 subtract(Matrix3 b) {
 
-	public Vector3 multiply(Vector3 v) {
+		return new Matrix3(
 
-		return new Vector3(
+				xx - b.xx, xy - b.xy, xz - b.xz,
 
-				m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
+				yx - b.yx, yy - b.yy, yz - b.yz,
 
-				m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z,
-
-				m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z
+				zx - b.zx, zy - b.zy, zz - b.zz
 
 		);
 
@@ -247,221 +685,286 @@ public class Matrix3 {
 
 	/*
 	 * ========================================================
-	 * 轉置矩陣
+	 * In-place Operation
+	 *
+	 * MPM核心版本
+	 * 不建立新物件
 	 * ========================================================
 	 */
 
 	/**
+	 * A += B
+	 */
+	public Matrix3 addInPlace(Matrix3 b) {
+
+		xx += b.xx;
+		xy += b.xy;
+		xz += b.xz;
+
+		yx += b.yx;
+		yy += b.yy;
+		yz += b.yz;
+
+		zx += b.zx;
+		zy += b.zy;
+		zz += b.zz;
+
+		return this;
+
+	}
+
+	/**
+	 * A -= B
+	 */
+	public Matrix3 subtractInPlace(Matrix3 b) {
+
+		xx -= b.xx;
+		xy -= b.xy;
+		xz -= b.xz;
+
+		yx -= b.yx;
+		yy -= b.yy;
+		yz -= b.yz;
+
+		zx -= b.zx;
+		zy -= b.zy;
+		zz -= b.zz;
+
+		return this;
+
+	}
+
+	/**
+	 * A *= scalar
+	 */
+	public Matrix3 scaleInPlace(double s) {
+
+		xx *= s;
+		xy *= s;
+		xz *= s;
+
+		yx *= s;
+		yy *= s;
+		yz *= s;
+
+		zx *= s;
+		zy *= s;
+		zz *= s;
+
+		return this;
+
+	}
+
+	/**
+	 * 純量乘法
+	 *
+	 * B=cA
+	 */
+	public Matrix3 multiply(double s) {
+
+		return new Matrix3(
+
+				xx * s, xy * s, xz * s,
+
+				yx * s, yy * s, yz * s,
+
+				zx * s, zy * s, zz * s
+
+		);
+
+	}
+
+	/*
+	 * ========================================================
+	 * Matrix Multiplication
+	 *
+	 * C=A*B
+	 * ========================================================
+	 */
+
+	/**
+	 * 矩陣乘法
+	 *
+	 * C=A*B
+	 */
+	public Matrix3 multiply(Matrix3 b) {
+
+		return new Matrix3(
+
+				xx * b.xx + xy * b.yx + xz * b.zx,
+
+				xx * b.xy + xy * b.yy + xz * b.zy,
+
+				xx * b.xz + xy * b.yz + xz * b.zz,
+
+				yx * b.xx + yy * b.yx + yz * b.zx,
+
+				yx * b.xy + yy * b.yy + yz * b.zy,
+
+				yx * b.xz + yy * b.yz + yz * b.zz,
+
+				zx * b.xx + zy * b.yx + zz * b.zx,
+
+				zx * b.xy + zy * b.yy + zz * b.zy,
+
+				zx * b.xz + zy * b.yz + zz * b.zz
+
+		);
+
+	}
+
+	/**
+	 * 矩陣乘Vector
+	 *
+	 * y=A*x
+	 */
+	public Vector3 multiply(Vector3 v) {
+
+		return new Vector3(
+
+				xx * v.x + xy * v.y + xz * v.z,
+
+				yx * v.x + yy * v.y + yz * v.z,
+
+				zx * v.x + zy * v.y + zz * v.z
+
+		);
+
+	}
+
+	/*
+	 * ========================================================
+	 * Transpose
 	 *
 	 * A^T
-	 *
+	 * ========================================================
 	 */
 
+	/**
+	 * 轉置矩陣
+	 */
 	public Matrix3 transpose() {
 
-		Matrix3 result = new Matrix3();
+		return new Matrix3(
 
-		for (int i = 0; i < 3; i++) {
+				xx, yx, zx,
 
-			for (int j = 0; j < 3; j++) {
+				xy, yy, zy,
 
-				result.m[i][j] = m[j][i];
+				xz, yz, zz
 
-			}
-
-		}
-
-		return result;
+		);
 
 	}
 
-	/*
-	 * ========================================================
-	 * Determinant 行列式乘積
-	 * ========================================================
-	 */
-
 	/**
-	 *
-	 * det(A)
-	 *
-	 */
-
-	public double determinant() {
-
-		return
-
-		m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1])
-
-				-
-
-				m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])
-
-				+
-
-				m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
-
-	}
-
-	/*
 	 * ========================================================
-	 * 反矩陣
-	 * ========================================================
-	 */
-
-	/**
+	 * Matrix inverse
 	 *
 	 * A^-1
 	 *
+	 * 使用：
+	 *
+	 * A^-1 = adj(A)/det(A)
+	 *
+	 * 適用：
+	 *
+	 * 1. Deformation Gradient F
+	 * 2. Velocity Gradient
+	 * 3. Coordinate transformation
+	 *
+	 * ========================================================
 	 */
-
 	public Matrix3 inverse() {
 
 		double det = determinant();
 
-		if (Math.abs(det) < 1e-12) {
-
-			throw new RuntimeException("Matrix不可逆");
-
+		if (Math.abs(det) < 1.0e-14) {
+			throw new RuntimeException("Matrix3 inverse failed: determinant = " + det);
 		}
 
-		Matrix3 result = new Matrix3();
+		double invDet = 1.0 / det;
 
-		result.m[0][0] = (m[1][1] * m[2][2] - m[1][2] * m[2][1]) / det;
+		return new Matrix3(
 
-		result.m[0][1] = (m[0][2] * m[2][1] - m[0][1] * m[2][2]) / det;
+				/*
+				 * Row 0
+				 */
 
-		result.m[0][2] = (m[0][1] * m[1][2] - m[0][2] * m[1][1]) / det;
+				(yy * zz - yz * zy) * invDet,
 
-		result.m[1][0] = (m[1][2] * m[2][0] - m[1][0] * m[2][2]) / det;
+				(xz * zy - xy * zz) * invDet,
 
-		result.m[1][1] = (m[0][0] * m[2][2] - m[0][2] * m[2][0]) / det;
+				(xy * yz - xz * yy) * invDet,
 
-		result.m[1][2] = (m[0][2] * m[1][0] - m[0][0] * m[1][2]) / det;
+				/*
+				 * Row 1
+				 */
 
-		result.m[2][0] = (m[1][0] * m[2][1] - m[1][1] * m[2][0]) / det;
+				(yz * zx - yx * zz) * invDet,
 
-		result.m[2][1] = (m[0][1] * m[2][0] - m[0][0] * m[2][1]) / det;
+				(xx * zz - xz * zx) * invDet,
 
-		result.m[2][2] = (m[0][0] * m[1][1] - m[0][1] * m[1][0]) / det;
+				(xz * yx - xx * yz) * invDet,
 
-		return result;
+				/*
+				 * Row 2
+				 */
 
-	}
+				(yx * zy - yy * zx) * invDet,
 
-	/*
-	 * ========================================================
-	 * 常用矩陣
-	 * ========================================================
-	 */
+				(xy * zx - xx * zy) * invDet,
 
-	/**
-	 * 單位矩陣
-	 *
-	 * I
-	 */
+				(xx * yy - xy * yx) * invDet
 
-	public static Matrix3 identity() {
-
-		Matrix3 I = new Matrix3();
-
-		I.m[0][0] = 1.0;
-
-		I.m[1][1] = 1.0;
-
-		I.m[2][2] = 1.0;
-
-		return I;
+		);
 
 	}
-
-	/**
-	 * 零矩陣
-	 */
-
-	public static Matrix3 zero() {
-
-		return new Matrix3();
-
-	}
-
-	/**
-	 * ============================================================
-	 *
-	 * Outer Product
-	 *
-	 * A += v ⊗ g
-	 *
-	 *
-	 * 矩陣形式：
-	 *
-	 * |vx gx vx gy vx gz|
-	 * |vy gx vy gy vy gz|
-	 * |vz gx vz gy vz gz|
-	 *
-	 * ============================================================
-	 */
-	public void addOuterProduct(Vector3 v, Vector3 g) {
-
-		m[0][0] += v.x * g.x;
-		m[0][1] += v.x * g.y;
-		m[0][2] += v.x * g.z;
-
-		m[1][0] += v.y * g.x;
-		m[1][1] += v.y * g.y;
-		m[1][2] += v.y * g.z;
-
-		m[2][0] += v.z * g.x;
-		m[2][1] += v.z * g.y;
-		m[2][2] += v.z * g.z;
-
-	}
-
+	
 	/**
 	 * ========================================================
-	 * Trace
+	 * Add Outer Product
 	 *
-	 * tr(A)
+	 * A += a ⊗ b
 	 *
-	 * = A11 + A22 + A33
+	 * 外積：
+	 *
+	 *        | ax*bx ax*by ax*bz |
+	 * a⊗b =  | ay*bx ay*by ay*bz |
+	 *        | az*bx az*by az*bz |
+	 *
+	 *
+	 * MPM用途：
+	 *
+	 * Velocity Gradient
+	 * Stress Update
+	 * P2G Transfer
+	 *
+	 *
+	 * In-place operation
+	 *
+	 * 不建立新物件
+	 *
 	 * ========================================================
 	 */
-	public double trace() {
+	public Matrix3 addOuterProduct(
+	        Vector3 a,
+	        Vector3 b) {
 
-	    return m[0][0]
-	         + m[1][1]
-	         + m[2][2];
+	    xx += a.x * b.x;
+	    xy += a.x * b.y;
+	    xz += a.x * b.z;
+
+	    yx += a.y * b.x;
+	    yy += a.y * b.y;
+	    yz += a.y * b.z;
+
+	    zx += a.z * b.x;
+	    zy += a.z * b.y;
+	    zz += a.z * b.z;
+
+	    return this;
 
 	}	
-	
-	/*
-	 * ========================================================
-	 * 輸出
-	 * ========================================================
-	 */
-
-	@Override
-
-	public String toString() {
-
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < 3; i++) {
-
-			sb.append("| ");
-
-			for (int j = 0; j < 3; j++) {
-
-				sb.append(String.format("%.5f ", m[i][j]));
-
-			}
-
-			sb.append("|\n");
-
-		}
-
-		return sb.toString();
-
-	}
 
 }

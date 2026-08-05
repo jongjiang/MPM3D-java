@@ -16,13 +16,11 @@ package tw.edu.mpm.math;
  *     4. Force
  *     5. Momentum
  *
- *
  * Vector:
  *
  *        | x |
  *    v = | y |
  *        | z |
- *
  *
  * ============================================================
  */
@@ -62,13 +60,9 @@ public class Vector3 {
 	 * Vector = (0,0,0)
 	 */
 	public Vector3() {
-
 		this.x = 0.0;
-
 		this.y = 0.0;
-
 		this.z = 0.0;
-
 	}
 
 	/**
@@ -80,13 +74,9 @@ public class Vector3 {
 	 */
 
 	public Vector3(double x, double y, double z) {
-
 		this.x = x;
-
 		this.y = y;
-
 		this.z = z;
-
 	}
 
 	/*
@@ -97,22 +87,10 @@ public class Vector3 {
 	 * ========================================================
 	 */
 
-	public void set(
-
-			double x,
-
-			double y,
-
-			double z
-
-	) {
-
+	public void set(double x, double y, double z) {
 		this.x = x;
-
 		this.y = y;
-
 		this.z = z;
-
 	}
 
 	/**
@@ -122,13 +100,9 @@ public class Vector3 {
 	 */
 
 	public Vector3(Vector3 other) {
-
 		this.x = other.x;
-
 		this.y = other.y;
-
 		this.z = other.z;
-
 	}
 
 	/*
@@ -147,13 +121,9 @@ public class Vector3 {
 	public Vector3 add(Vector3 v) {
 
 		return new Vector3(
-
 				this.x + v.x,
-
 				this.y + v.y,
-
 				this.z + v.z
-
 		);
 
 	}
@@ -162,18 +132,15 @@ public class Vector3 {
 	 * 向量減法
 	 *
 	 * v = a - b
+	 * 
 	 */
 
 	public Vector3 subtract(Vector3 v) {
 
 		return new Vector3(
-
 				this.x - v.x,
-
 				this.y - v.y,
-
 				this.z - v.z
-
 		);
 
 	}
@@ -192,13 +159,9 @@ public class Vector3 {
 	public Vector3 multiply(double scalar) {
 
 		return new Vector3(
-
-				scalar * x,
-
-				scalar * y,
-
-				scalar * z
-
+							scalar * x,
+							scalar * y,
+							scalar * z
 		);
 
 	}
@@ -210,19 +173,13 @@ public class Vector3 {
 	public Vector3 divide(double scalar) {
 
 		if (Math.abs(scalar) < 1e-12) {
-
 			throw new ArithmeticException("Vector除以零");
-
 		}
 
 		return new Vector3(
-
-				x / scalar,
-
-				y / scalar,
-
-				z / scalar
-
+							x / scalar,
+							y / scalar,
+							z / scalar
 		);
 
 	}
@@ -237,21 +194,14 @@ public class Vector3 {
 	 *
 	 * Dot Product
 	 *
-	 *
-	 * a·b =
-	 *
-	 * axbx + ayby + azbz
+	 * a·b = axbx + ayby + azbz
 	 *
 	 */
 
 	public double dot(Vector3 v) {
 
-		return
-
-				this.x * v.x +
-
+		return  this.x * v.x +
 				this.y * v.y +
-
 				this.z * v.z;
 
 	}
@@ -266,7 +216,6 @@ public class Vector3 {
 	 *
 	 * Cross Product
 	 *
-	 *
 	 * a × b
 	 *
 	 */
@@ -274,13 +223,9 @@ public class Vector3 {
 	public Vector3 cross(Vector3 v) {
 
 		return new Vector3(
-
 				this.y * v.z - this.z * v.y,
-
 				this.z * v.x - this.x * v.z,
-
 				this.x * v.y - this.y * v.x
-
 		);
 
 	}
@@ -298,17 +243,7 @@ public class Vector3 {
 	 */
 
 	public double magnitude() {
-
-		return Math.sqrt(
-
-				x * x +
-
-						y * y +
-
-						z * z
-
-		);
-
+		return Math.sqrt(x * x + y * y + z * z);
 	}
 
 	/**
@@ -318,15 +253,7 @@ public class Vector3 {
 	 */
 
 	public double magnitudeSquared() {
-
-		return
-
-		x * x +
-
-				y * y +
-
-				z * z;
-
+		return x * x + y * y + z * z;
 	}
 
 	/*
@@ -348,9 +275,7 @@ public class Vector3 {
 		double length = magnitude();
 
 		if (length < 1e-12) {
-
 			return new Vector3();
-
 		}
 
 		return divide(length);
@@ -371,13 +296,9 @@ public class Vector3 {
 	 */
 
 	public void addInPlace(Vector3 v) {
-
 		this.x += v.x;
-
 		this.y += v.y;
-
 		this.z += v.z;
-
 	}
 
 	/**
@@ -388,13 +309,9 @@ public class Vector3 {
 	 */	
 	
 	public void subtractInPlace(Vector3 v) {
-
 		this.x -= v.x;
-
 		this.y -= v.y;
-
 		this.z -= v.z;
-
 	}	
 
 	/**
@@ -404,13 +321,9 @@ public class Vector3 {
 	 */
 
 	public void multiplyInPlace(double scalar) {
-
 		this.x *= scalar;
-
 		this.y *= scalar;
-
 		this.z *= scalar;
-
 	}
 
 	/*

@@ -33,7 +33,6 @@ import tw.edu.mpm.math.Tensor3;
  *
  *     Deformation Gradient F
  *
- *
  * ============================================================
  */
 
@@ -58,25 +57,19 @@ public class MaterialPoint {
 	 */
 
 	/*
-	 * 位置
-	 *
-	 * x
+	 * 位置 x
 	 */
 
 	private Vector3 position;
 
 	/*
-	 * 速度
-	 *
-	 * v
+	 * 速度 v
 	 */
 
 	private Vector3 velocity;
 
 	/*
-	 * 加速度
-	 *
-	 * a
+	 * 加速度 a
 	 */
 
 	private Vector3 acceleration;
@@ -90,25 +83,19 @@ public class MaterialPoint {
 	 */
 
 	/*
-	 * 質量
-	 *
-	 * m
+	 * 質量 m
 	 */
 
 	private double mass;
 
 	/*
-	 * 體積
-	 *
-	 * V
+	 * 體積 V
 	 */
 
 	private double volume;
 
 	/*
-	 * 密度
-	 *
-	 * rho
+	 * 密度 rho
 	 */
 
 	private double density;
@@ -122,29 +109,20 @@ public class MaterialPoint {
 	 */
 
 	/*
-	 * Stress Tensor
-	 *
-	 * sigma
+	 * Stress Tensor sigma
 	 */
 
 	private Tensor3 stress;
 
 	/*
-	 * Strain Tensor
-	 *
-	 * epsilon
+	 * Strain Tensor epsilon
 	 */
 
 	private Tensor3 strain;
 
 	/*
 	 * ========================================================
-	 *
-	 * Deformation Gradient
-	 *
-	 *
-	 * F
-	 *
+	 * Deformation Gradient F
 	 * ========================================================
 	 */
 
@@ -152,9 +130,7 @@ public class MaterialPoint {
 
 	/*
 	 * ========================================================
-	 *
 	 * Constructor
-	 *
 	 * ========================================================
 	 */
 
@@ -174,19 +150,15 @@ public class MaterialPoint {
 
 		this.density = 0.0;
 
-		this.stress = Tensor3.zero();
+		this.stress = new Tensor3().zero();
 
-		this.strain = Tensor3.zero();
+		this.strain = new Tensor3().zero();
 
 		/*
-		 *
-		 * 初始狀態：
-		 *
-		 * F = I
-		 *
+		 * 初始狀態： F = I
 		 */
 
-		this.deformationGradient = Matrix3.identity();
+		this.deformationGradient = new Matrix3().identity();
 
 	}
 
@@ -393,7 +365,7 @@ public class MaterialPoint {
 
 		return
 
-		"Particle ID=" + id +
+				"Particle ID=" + id +
 
 				"\nPosition=" + position +
 

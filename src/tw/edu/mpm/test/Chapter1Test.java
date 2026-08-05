@@ -170,7 +170,7 @@ public class Chapter1Test {
 
 		System.out.println(A.inverse());
 
-		Matrix3 I = Matrix3.identity();
+		Matrix3 I = new Matrix3().identity();
 
 		System.out.println("Identity=");
 
