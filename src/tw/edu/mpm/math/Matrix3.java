@@ -190,7 +190,7 @@ public class Matrix3 {
 	/**
 	 * 建立單位矩陣
 	 */
-	public static Matrix3 Identity() {
+	public static Matrix3 identityMatrix() {
 
 		return new Matrix3().identity();
 	}

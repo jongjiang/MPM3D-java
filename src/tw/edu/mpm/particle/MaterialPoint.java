@@ -158,7 +158,7 @@ public class MaterialPoint {
 		 * 初始狀態： F = I
 		 */
 
-		this.deformationGradient = new Matrix3().identity();
+		this.deformationGradient = Matrix3.identityMatrix();
 
 	}
 
