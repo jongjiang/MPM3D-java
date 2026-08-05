@@ -421,9 +421,9 @@ public class GridWriter {
 
 
 
-            Vector3 f =  node.getInternalForce().add( node.getExternalForce() ); //Internal + External
-
-
+            //Vector3 f =  node.getInternalForce().add( node.getExternalForce() ); //Internal + External
+            Vector3 f =  node.getInternalForce();
+            f.addInPlace(node.getExternalForce());
 
             out.write(
 

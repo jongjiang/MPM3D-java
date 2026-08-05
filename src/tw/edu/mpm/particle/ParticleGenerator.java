@@ -69,7 +69,7 @@ public class ParticleGenerator {
 		 *
 		 */
 
-		double volume =	spacing * spacing * spacing;
+		double volume = spacing * spacing * spacing;
 
 		/*
 		 *
@@ -168,7 +168,7 @@ public class ParticleGenerator {
 
 				);
 
-		double volume =	spacing * spacing * thickness;
+		double volume = spacing * spacing * thickness;
 
 		double mass = density * volume;
 
@@ -230,11 +230,11 @@ public class ParticleGenerator {
 
 	public static ParticleSet createSphere(Vector3 center, double radius, double spacing, double density) {
 
-		int n =	(int) (radius * 2 / spacing) + 1;
+		int n = (int) (radius * 2 / spacing) + 1;
 
-		ParticleSet particles =	new ParticleSet();
+		ParticleSet particles = new ParticleSet();
 
-		double volume =	spacing * spacing * spacing;
+		double volume = spacing * spacing * spacing;
 
 		double mass = density * volume;
 
@@ -246,9 +246,7 @@ public class ParticleGenerator {
 
 				for (int i = 0; i < n; i++) {
 
-					Vector3 pos =
-
-							new Vector3(
+					Vector3 pos = new Vector3(
 
 									center.x - radius + i * spacing,
 
@@ -256,26 +254,14 @@ public class ParticleGenerator {
 
 									center.z - radius + k * spacing
 
-							);
+								  );
 
-					if (pos.subtract(center).magnitude() <=	radius) {
+					if (pos.subtract(center).magnitude() <= radius) {
 
-						MaterialPoint p =
-
-								new MaterialPoint(
-
-										id++,
-
-										pos
-
-								);
-
+						MaterialPoint p = new MaterialPoint(id++, pos);
 						p.setVolume(volume);
-
 						p.setMass(mass);
-
 						p.setDensity(density);
-
 						particles.add(p);
 
 					}
