@@ -146,17 +146,13 @@ public class ParticleSet implements Iterable<MaterialPoint> {
 	 */
 
 	/**
-	 *
 	 * 設定全部Particle密度
-	 *
 	 */
 
 	public void setDensity(double density) {
-
 		for (MaterialPoint p : particles) {
 			p.setDensity(density);
 		}
-
 	}
 
 	/**
@@ -174,7 +170,6 @@ public class ParticleSet implements Iterable<MaterialPoint> {
 	 * Iterator
 	 * ========================================================
 	 */
-
 	@Override
 	public Iterator<MaterialPoint> iterator() {
 		return particles.iterator();
@@ -249,7 +244,6 @@ public class ParticleSet implements Iterable<MaterialPoint> {
 	 * Debug Output
 	 * ========================================================
 	 */
-
 	public void printInfo() {
 		System.out.println("========== Particle Set ==========");
 		System.out.println("Particle Count = " + particles.size());
