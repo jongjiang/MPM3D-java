@@ -47,8 +47,7 @@ public class FreeFallExample {
 		 *
 		 * 高度5m
 		 */
-		//ParticleSet particles =	ParticleGenerator.createBlock(new Vector3(4, 5, 4), 5, 5, 5, 0.2, 1800);
-		ParticleSet particles =	ParticleGenerator.createBlock(new Vector3(4, 5, 4), 50, 50, 50, 0.2, 1800);
+		ParticleSet particles =	ParticleGenerator.createBlock(new Vector3(4, 5, 4), 5, 5, 5, 0.2, 1800);
 
 		/*
 		 * 3. 建立Solver
