@@ -31,60 +31,42 @@ public class MPMSolver {
 
 	/*
 	 * ========================================================
-	 *
 	 * Model Data
-	 *
 	 * ========================================================
 	 */
-
 	private Grid grid;
-
 	private ParticleSet particles;
 
 	/*
 	 * ========================================================
-	 *
 	 * Solver Modules
-	 *
 	 * ========================================================
 	 */
-
 	private GridSolver gridSolver;
-
 	private StressUpdate stressUpdate;
 
 	/*
 	 * ========================================================
-	 *
 	 * Time Control
-	 *
 	 * ========================================================
 	 */
-
 	private double time;
-
 	private double dt;
-
 	private double endTime;
 
 	/*
 	 * ========================================================
-	 *
 	 * Constructor
-	 *
 	 * ========================================================
 	 */
-
 	public MPMSolver(Grid grid, ParticleSet particles) {
-
 		this.grid = grid;
 		this.particles = particles;
 		this.gridSolver = new GridSolver();
-		this.stressUpdate =	new StressUpdate(Constants.YOUNG_MODULUS, Constants.POISSON_RATIO);
+		this.stressUpdate = new StressUpdate(Constants.YOUNG_MODULUS, Constants.POISSON_RATIO);
 		this.dt = Constants.TIME_STEP;
 		this.time = 0.0;
 		this.endTime = 1.0;
-
 	}
 
 	/**
@@ -120,14 +102,13 @@ public class MPMSolver {
 	 */
 
 	public void step() {
-		
+
 		long start = System.nanoTime();
 		long end = 0;
 
 		/*
 		 * 1. Stress Update
 		 */
-
 		start = System.nanoTime();
 		stressUpdate.update(particles, grid, dt);
 		end = System.nanoTime();
@@ -136,16 +117,14 @@ public class MPMSolver {
 		/*
 		 * 2. Particle → Grid
 		 */
-
 		start = System.nanoTime();
-		P2GTransfer.transfer(particles,	grid);
+		P2GTransfer.transfer(particles, grid);
 		end = System.nanoTime();
 		System.out.printf("[Particle → Grid] Elapsed Time = %.3f ms%n", (end - start) / 1_000_000.0);
 
 		/*
 		 * 3. Grid Momentum Solve
 		 */
-
 		start = System.nanoTime();
 		gridSolver.solve(grid, dt);
 		end = System.nanoTime();
@@ -154,16 +133,14 @@ public class MPMSolver {
 		/*
 		 * 4. Grid → Particle
 		 */
-
 		start = System.nanoTime();
-		G2PTransfer.transfer(particles,	grid, dt);
+		G2PTransfer.transfer(particles, grid, dt);
 		end = System.nanoTime();
 		System.out.printf("[Grid → Particle] Elapsed Time = %.3f ms%n", (end - start) / 1_000_000.0);
 
 		/*
 		 * Simulation Time
 		 */
-
 		time += dt;
 
 	}
@@ -183,13 +160,11 @@ public class MPMSolver {
 		int step = 0;
 
 		while (time < endTime) {
-
 			step();
-
 			step++;
 
+			// output .vtp files
 			if (step % 100 == 0) {
-
 				printStatus(step);
 
 				try {
@@ -197,9 +172,7 @@ public class MPMSolver {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 			}
-
 		}
 
 		System.out.println("===== MPM Simulation Finished =====");
