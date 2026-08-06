@@ -40,7 +40,6 @@ public class FreeFallExample {
 		 * y:0~10
 		 * z:0~10
 		 */
-
 		Grid grid =	new Grid(20, 20, 20, 0.5);
 
 		/*
@@ -48,26 +47,22 @@ public class FreeFallExample {
 		 *
 		 * 高度5m
 		 */
-
 		ParticleSet particles =	ParticleGenerator.createBlock(new Vector3(4, 5, 4), 5, 5, 5, 0.2, 1800);
 
 		/*
 		 * 3. 建立Solver
 		 */
-
 		MPMSolver solver = new MPMSolver(grid, particles);
 
 		/*
 		 * 時間設定
 		 */
-
 		solver.setTimeStep(0.0005);
 		solver.setEndTime(1.2);
 
 		/*
 		 * Run
 		 */
-
 		solver.run();
 		System.out.println("Particle final position");
 		System.out.println(particles.get(0).getPosition());
