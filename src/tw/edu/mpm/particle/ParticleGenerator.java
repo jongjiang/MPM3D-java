@@ -56,13 +56,13 @@ public class ParticleGenerator {
 		/*
 		 * 單一Particle體積
 		 */
-		double volume = spacing * spacing * spacing;
+		double volume = spacing * spacing * spacing; // 0.2 * 0.2 * 0.2
 
 		/*
-		 * Particle質量 m=rho V
+		 * Particle質量 m = rho * V
 		 */
 
-		double mass = density * volume;
+		double mass = density * volume; // 1800 * V
 
 		int id = 0;
 
@@ -73,7 +73,7 @@ public class ParticleGenerator {
 				for (int i = 0; i < nx; i++) {
 					Vector3 position =
 							new Vector3(
-									origin.x + i * spacing,
+									origin.x + i * spacing, // origin = new Vector3(4, 5, 4)
 									origin.y + j * spacing,
 									origin.z + k * spacing
 							);

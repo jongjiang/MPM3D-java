@@ -16,10 +16,7 @@ import tw.edu.mpm.solver.StressUpdate;
  * MPM3D-Java
  *
  * SlopeFailureExample.java
- *
- *
  * 邊坡滑動分析案例
- *
  *
  * Purpose:
  *
@@ -29,11 +26,9 @@ import tw.edu.mpm.solver.StressUpdate;
  *
  * ============================================================
  */
-
 public class SlopeFailureExample {
 
 	public static void main(String[] args) {
-		
 
 		System.out.println("MPM Slope Failure Example");
 

@@ -25,7 +25,6 @@ import tw.edu.mpm.util.Constants;
  *
  * ============================================================
  */
-
 public class Grid {
 
 	/*
@@ -33,11 +32,8 @@ public class Grid {
 	 * Grid尺寸
 	 * ========================================================
 	 */
-
 	private int nx;
-
 	private int ny;
-
 	private int nz;
 
 	/*
@@ -45,7 +41,6 @@ public class Grid {
 	 * Cell大小
 	 * ========================================================
 	 */
-
 	private double dx;
 
 	/*
@@ -53,7 +48,6 @@ public class Grid {
 	 * Node集合
 	 * ========================================================
 	 */
-
 	private List<GridNode> nodes;
 
 	/*
@@ -61,7 +55,6 @@ public class Grid {
 	 * Cell集合
 	 * ========================================================
 	 */
-
 	private List<Cell> cells;
 
 	/*
@@ -69,7 +62,6 @@ public class Grid {
 	 * Constructor
 	 * ========================================================
 	 */
-
 	public Grid() {
 		this(Constants.GRID_NX, Constants.GRID_NY, Constants.GRID_NZ, Constants.GRID_SIZE);
 	}
@@ -89,16 +81,11 @@ public class Grid {
 
 	/*
 	 * ========================================================
-	 *
 	 * 建立 Grid Nodes
-	 *
 	 * Node數量：
-	 *
 	 * (nx+1)(ny+1)(nz+1)
-	 *
 	 * ========================================================
 	 */
-
 	private void buildNodes() {
 
 		int id = 0;
@@ -122,15 +109,10 @@ public class Grid {
 
 	/*
 	 * ========================================================
-	 *
 	 * 建立 Cell
-	 *
-	 *
 	 * 每個Cell包含8個Node
-	 *
 	 * ========================================================
 	 */
-
 	private void buildCells() {
 
 		int id = 0;
@@ -172,7 +154,6 @@ public class Grid {
 	 * 3D → 1D
 	 * ========================================================
 	 */
-
 	private int nodeIndex(int i, int j, int k) {
 		return k * (ny + 1) * (nx + 1) + j * (nx + 1) + i;
 	}
@@ -182,7 +163,6 @@ public class Grid {
 	 * 取得Node
 	 * ========================================================
 	 */
-
 	public GridNode getNode(int i, int j, int k) {
 		return nodes.get(nodeIndex(i, j, k));
 	}
@@ -201,7 +181,6 @@ public class Grid {
 	 *
 	 * ========================================================
 	 */
-
 	public Cell findCell(Vector3 position) {
 
 		for (Cell cell : cells) {
@@ -221,13 +200,10 @@ public class Grid {
 	 * 每個時間步開始
 	 * ========================================================
 	 */
-
 	public void reset() {
-
 		for (GridNode node : nodes) {
 			node.reset();
 		}
-
 	}
 
 	/*
@@ -235,7 +211,6 @@ public class Grid {
 	 * Apply Boundary
 	 * ========================================================
 	 */
-
 	public void applyBoundary() {
 		for (GridNode node : nodes) {
 			node.applyBoundary();
@@ -247,7 +222,6 @@ public class Grid {
 	 * Getter
 	 * ========================================================
 	 */
-
 	public List<GridNode> getNodes() {
 		return nodes;
 	}
@@ -257,7 +231,6 @@ public class Grid {
 	 * Get Node
 	 * ========================================================
 	 */
-
 	public GridNode getNode(int id) {
 		return nodes.get(id);
 	}
@@ -305,7 +278,6 @@ public class Grid {
 	 * 輸出資訊
 	 * ========================================================
 	 */
-
 	public void printInfo() {
 		System.out.println("========== Grid Information ==========");
 		System.out.println("Dimension = 3D");
