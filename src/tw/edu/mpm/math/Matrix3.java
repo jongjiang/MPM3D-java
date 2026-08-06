@@ -30,7 +30,6 @@ public class Matrix3 {
 	 * Matrix Elements
 	 * ========================================================
 	 */
-
 	public double xx;
 	public double xy;
 	public double xz;
@@ -45,12 +44,8 @@ public class Matrix3 {
 
 	/*
 	 * ========================================================
-	 * Constructors
+	 * Constructors 建立零矩陣
 	 * ========================================================
-	 */
-
-	/**
-	 * 建立零矩陣
 	 */
 	public Matrix3() {
 	}
@@ -191,7 +186,6 @@ public class Matrix3 {
 	 * 建立單位矩陣
 	 */
 	public static Matrix3 identityMatrix() {
-
 		return new Matrix3().identity();
 	}
 
@@ -199,7 +193,6 @@ public class Matrix3 {
 	 * 建立零矩陣
 	 */
 	public static Matrix3 Zero() {
-
 		return new Matrix3();
 	}
 
@@ -324,7 +317,6 @@ public class Matrix3 {
 	 * 建立完整複本
 	 */
 	public Matrix3 copy() {
-
 		return new Matrix3(this);
 	}
 
@@ -332,7 +324,6 @@ public class Matrix3 {
 	 * 從另一矩陣複製資料
 	 */
 	public Matrix3 copyFrom(Matrix3 m) {
-
 		xx = m.xx;
 		xy = m.xy;
 		xz = m.xz;
@@ -358,7 +349,6 @@ public class Matrix3 {
 	 * 清除矩陣 (全部設為 0)
 	 */
 	public void clear() {
-
 		xx = xy = xz = 0.0;
 		yx = yy = yz = 0.0;
 		zx = zy = zz = 0.0;
@@ -368,11 +358,8 @@ public class Matrix3 {
 	 * 是否為零矩陣
 	 */
 	public boolean isZero() {
-
-		return xx == 0.0 && xy == 0.0 && xz == 0.0 &&
-
+		return  xx == 0.0 && xy == 0.0 && xz == 0.0 &&
 				yx == 0.0 && yy == 0.0 && yz == 0.0 &&
-
 				zx == 0.0 && zy == 0.0 && zz == 0.0;
 	}
 
@@ -388,7 +375,6 @@ public class Matrix3 {
 	 * tr(A)
 	 */
 	public double trace() {
-
 		return xx + yy + zz;
 	}
 
@@ -396,10 +382,9 @@ public class Matrix3 {
 	 * 是否為單位矩陣
 	 */
 	public boolean isIdentity() {
-
-		return xx == 1.0 && yy == 1.0 && zz == 1.0 &&
-
-				xy == 0.0 && xz == 0.0 && yx == 0.0 && yz == 0.0 && zx == 0.0 && zy == 0.0;
+		return  xx == 1.0 && yy == 1.0 && zz == 1.0 &&
+				xy == 0.0 && xz == 0.0 && yx == 0.0 && 
+				yz == 0.0 && zx == 0.0 && zy == 0.0;
 	}
 
 	/*
@@ -418,9 +403,7 @@ public class Matrix3 {
 		return new double[][] {
 
 				{ xx, xy, xz },
-
 				{ yx, yy, yz },
-
 				{ zx, zy, zz }
 
 		};
@@ -446,7 +429,6 @@ public class Matrix3 {
 	 * 3. Drucker-Prager
 	 */
 	public double traceValue() {
-
 		return xx + yy + zz;
 	}
 
@@ -463,10 +445,8 @@ public class Matrix3 {
 		double tr = traceValue();
 
 		double a2 = xx * xx + xy * yx + xz * zx +
-
-				yx * xy + yy * yy + yz * zy +
-
-				zx * xz + zy * yz + zz * zz;
+					yx * xy + yy * yy + yz * zy +
+					zx * xz + zy * yz + zz * zz;
 
 		return 0.5 * (tr * tr - a2);
 	}
@@ -483,12 +463,8 @@ public class Matrix3 {
 	 */
 	public double determinant() {
 
-		return
-
-		xx * (yy * zz - yz * zy)
-
+		return	  xx * (yy * zz - yz * zy)
 				- xy * (yx * zz - yz * zx)
-
 				+ xz * (yx * zy - yy * zx);
 
 	}
@@ -508,13 +484,9 @@ public class Matrix3 {
 	public double frobeniusNorm() {
 
 		return Math.sqrt(
-
-				xx * xx + xy * xy + xz * xz +
-
+						xx * xx + xy * xy + xz * xz +
 						yx * yx + yy * yy + yz * yz +
-
 						zx * zx + zy * zy + zz * zz
-
 		);
 
 	}
@@ -555,16 +527,8 @@ public class Matrix3 {
 	 */
 	public boolean isSymmetric(double tolerance) {
 
-		return
-
-		Math.abs(xy - yx) < tolerance
-
-				&&
-
-				Math.abs(xz - zx) < tolerance
-
-				&&
-
+		return	Math.abs(xy - yx) < tolerance &&
+				Math.abs(xz - zx) < tolerance &&
 				Math.abs(yz - zy) < tolerance;
 
 	}
@@ -577,9 +541,7 @@ public class Matrix3 {
 	public double symmetryError() {
 
 		double a = xy - yx;
-
 		double b = xz - zx;
-
 		double c = yz - zy;
 
 		return Math.sqrt(a * a + b * b + c * c);
@@ -624,13 +586,9 @@ public class Matrix3 {
 	public double[][] array() {
 
 		return new double[][] {
-
 				{ xx, xy, xz },
-
 				{ yx, yy, yz },
-
 				{ zx, zy, zz }
-
 		};
 
 	}
@@ -653,13 +611,9 @@ public class Matrix3 {
 	public Matrix3 add(Matrix3 b) {
 
 		return new Matrix3(
-
 				xx + b.xx, xy + b.xy, xz + b.xz,
-
 				yx + b.yx, yy + b.yy, yz + b.yz,
-
 				zx + b.zx, zy + b.zy, zz + b.zz
-
 		);
 
 	}
@@ -672,13 +626,9 @@ public class Matrix3 {
 	public Matrix3 subtract(Matrix3 b) {
 
 		return new Matrix3(
-
 				xx - b.xx, xy - b.xy, xz - b.xz,
-
 				yx - b.yx, yy - b.yy, yz - b.yz,
-
 				zx - b.zx, zy - b.zy, zz - b.zz
-
 		);
 
 	}
@@ -763,13 +713,9 @@ public class Matrix3 {
 	public Matrix3 multiply(double s) {
 
 		return new Matrix3(
-
 				xx * s, xy * s, xz * s,
-
 				yx * s, yy * s, yz * s,
-
 				zx * s, zy * s, zz * s
-
 		);
 
 	}
@@ -790,25 +736,17 @@ public class Matrix3 {
 	public Matrix3 multiply(Matrix3 b) {
 
 		return new Matrix3(
-
 				xx * b.xx + xy * b.yx + xz * b.zx,
-
 				xx * b.xy + xy * b.yy + xz * b.zy,
-
 				xx * b.xz + xy * b.yz + xz * b.zz,
 
 				yx * b.xx + yy * b.yx + yz * b.zx,
-
 				yx * b.xy + yy * b.yy + yz * b.zy,
-
 				yx * b.xz + yy * b.yz + yz * b.zz,
 
 				zx * b.xx + zy * b.yx + zz * b.zx,
-
 				zx * b.xy + zy * b.yy + zz * b.zy,
-
 				zx * b.xz + zy * b.yz + zz * b.zz
-
 		);
 
 	}
@@ -821,13 +759,9 @@ public class Matrix3 {
 	public Vector3 multiply(Vector3 v) {
 
 		return new Vector3(
-
 				xx * v.x + xy * v.y + xz * v.z,
-
 				yx * v.x + yy * v.y + yz * v.z,
-
 				zx * v.x + zy * v.y + zz * v.z
-
 		);
 
 	}
@@ -846,13 +780,9 @@ public class Matrix3 {
 	public Matrix3 transpose() {
 
 		return new Matrix3(
-
 				xx, yx, zx,
-
 				xy, yy, zy,
-
 				xz, yz, zz
-
 		);
 
 	}
@@ -892,9 +822,7 @@ public class Matrix3 {
 				 */
 
 				(yy * zz - yz * zy) * invDet,
-
 				(xz * zy - xy * zz) * invDet,
-
 				(xy * yz - xz * yy) * invDet,
 
 				/*
@@ -902,9 +830,7 @@ public class Matrix3 {
 				 */
 
 				(yz * zx - yx * zz) * invDet,
-
 				(xx * zz - xz * zx) * invDet,
-
 				(xz * yx - xx * yz) * invDet,
 
 				/*
@@ -912,9 +838,7 @@ public class Matrix3 {
 				 */
 
 				(yx * zy - yy * zx) * invDet,
-
 				(xy * zx - xx * zy) * invDet,
-
 				(xx * yy - xy * yx) * invDet
 
 		);
@@ -947,9 +871,7 @@ public class Matrix3 {
 	 *
 	 * ========================================================
 	 */
-	public Matrix3 addOuterProduct(
-	        Vector3 a,
-	        Vector3 b) {
+	public Matrix3 addOuterProduct(Vector3 a, Vector3 b) {
 
 	    xx += a.x * b.x;
 	    xy += a.x * b.y;

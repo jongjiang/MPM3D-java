@@ -25,7 +25,6 @@ package tw.edu.mpm.math;
  * StrainRate   D
  * Deformation Tensor
  *
- *
  * ============================================================
  */
 public class Tensor3 {
@@ -58,7 +57,6 @@ public class Tensor3 {
 	 * 建立零張量
 	 */
 	public Tensor3() {
-
 	}
 
 	/**
@@ -80,7 +78,6 @@ public class Tensor3 {
 		this.zx = zx;
 		this.zy = zy;
 		this.zz = zz;
-
 	}
 
 	/**
@@ -112,11 +109,8 @@ public class Tensor3 {
 	 * 一次設定全部元素
 	 */
 	public Tensor3 set(
-
 			double xx, double xy, double xz,
-
 			double yx, double yy, double yz,
-
 			double zx, double zy, double zz) {
 
 		this.xx = xx;
@@ -160,9 +154,7 @@ public class Tensor3 {
 	 * 建立複本
 	 */
 	public Tensor3 copy() {
-
 		return new Tensor3(this);
-
 	}
 
 	/*
@@ -219,18 +211,14 @@ public class Tensor3 {
 	 * 建立單位張量
 	 */
 	public static Tensor3 identityTensor() {
-
 		return new Tensor3().identity();
-
 	}
 
 	/**
 	 * 建立零張量
 	 */
 	public static Tensor3 zeroTensor() {
-
 		return new Tensor3();
-
 	}
 
 	/*
@@ -410,13 +398,9 @@ public class Tensor3 {
 	public Tensor3 subtract(Tensor3 b) {
 
 		return new Tensor3(
-
 				xx - b.xx, xy - b.xy, xz - b.xz,
-
 				yx - b.yx, yy - b.yy, yz - b.yz,
-
 				zx - b.zx, zy - b.zy, zz - b.zz
-
 		);
 
 	}
@@ -429,13 +413,9 @@ public class Tensor3 {
 	public Tensor3 multiply(double s) {
 
 		return new Tensor3(
-
 				xx * s, xy * s, xz * s,
-
 				yx * s, yy * s, yz * s,
-
 				zx * s, zy * s, zz * s
-
 		);
 
 	}
@@ -541,13 +521,9 @@ public class Tensor3 {
 	public Tensor3 transpose() {
 
 		return new Tensor3(
-
 				xx, yx, zx,
-
 				xy, yy, zy,
-
 				xz, yz, zz
-
 		);
 
 	}
@@ -566,25 +542,9 @@ public class Tensor3 {
 		double half = 0.5;
 
 		return new Tensor3(
-
-				xx,
-
-				(xy + yx) * half,
-
-				(xz + zx) * half,
-
-				(yx + xy) * half,
-
-				yy,
-
-				(yz + zy) * half,
-
-				(zx + xz) * half,
-
-				(zy + yz) * half,
-
-				zz
-
+				xx,	              (xy + yx) * half, (xz + zx) * half,
+				(yx + xy) * half, yy,  		        (yz + zy) * half,
+				(zx + xz) * half, (zy + yz) * half,	zz
 		);
 
 	}
@@ -607,13 +567,9 @@ public class Tensor3 {
 		double mean = trace() / 3.0;
 
 		return new Tensor3(
-
 				xx - mean, xy, xz,
-
 				yx, yy - mean, yz,
-
 				zx, zy, zz - mean
-
 		);
 
 	}
@@ -637,12 +593,8 @@ public class Tensor3 {
 	 */
 	public double doubleDot(Tensor3 b) {
 
-		return
-
-		xx * b.xx + xy * b.xy + xz * b.xz +
-
+		return  xx * b.xx + xy * b.xy + xz * b.xz +
 				yx * b.yx + yy * b.yy + yz * b.yz +
-
 				zx * b.zx + zy * b.zy + zz * b.zz;
 
 	}
@@ -654,9 +606,7 @@ public class Tensor3 {
 	 *
 	 */
 	public double norm() {
-
 		return Math.sqrt(doubleDot(this));
-
 	}
 
 	/**
@@ -664,19 +614,14 @@ public class Tensor3 {
 	 *
 	 * J2 = 1/2 S:S
 	 *
-	 *
 	 * 用於：
 	 *
 	 * Mohr-Coulomb
 	 * Drucker-Prager
-	 *
 	 */
 	public double secondInvariant() {
-
 		Tensor3 s = deviatoric();
-
 		return 0.5 * s.doubleDot(s);
-
 	}
 
 	/**
@@ -689,11 +634,8 @@ public class Tensor3 {
 	 *
 	 */
 	public double vonMises() {
-
 		Tensor3 s = deviatoric();
-
 		return Math.sqrt(1.5 * s.doubleDot(s));
-
 	}
 
 	/*
@@ -701,7 +643,6 @@ public class Tensor3 {
 	 * Add diagonal
 	 *
 	 * T += aI
-	 *
 	 * ========================================================
 	 */
 
@@ -714,15 +655,10 @@ public class Tensor3 {
 	 *
 	 */
 	public Tensor3 addDiagonal(double value) {
-
 		xx += value;
-
 		yy += value;
-
 		zz += value;
-
 		return this;
-
 	}
 
 	/*
@@ -730,7 +666,6 @@ public class Tensor3 {
 	 * Outer Product
 	 *
 	 * A = a ⊗ b
-	 *
 	 * ========================================================
 	 */
 
@@ -743,13 +678,9 @@ public class Tensor3 {
 	public static Tensor3 outerProduct(Vector3 a, Vector3 b) {
 
 		return new Tensor3(
-
 				a.x * b.x, a.x * b.y, a.x * b.z,
-
 				a.y * b.x, a.y * b.y, a.y * b.z,
-
 				a.z * b.x, a.z * b.y, a.z * b.z
-
 		);
 
 	}
@@ -821,13 +752,9 @@ public class Tensor3 {
 	public Matrix3 toMatrix3() {
 
 		return new Matrix3(
-
 				xx, xy, xz,
-
 				yx, yy, yz,
-
 				zx, zy, zz
-
 		);
 
 	}
@@ -838,13 +765,9 @@ public class Tensor3 {
 	public static Tensor3 fromMatrix(Matrix3 m) {
 
 		return new Tensor3(
-
 				m.xx, m.xy, m.xz,
-
 				m.yx, m.yy, m.yz,
-
 				m.zx, m.zy, m.zz
-
 		);
 
 	}
@@ -860,16 +783,10 @@ public class Tensor3 {
 	 */
 	public boolean isFinite() {
 
-		return
-
-		Double.isFinite(xx) && Double.isFinite(xy) && Double.isFinite(xz)
-
+		return	Double.isFinite(xx) && Double.isFinite(xy) && Double.isFinite(xz)
 				&&
-
 				Double.isFinite(yx) && Double.isFinite(yy) && Double.isFinite(yz)
-
 				&&
-
 				Double.isFinite(zx) && Double.isFinite(zy) && Double.isFinite(zz);
 
 	}
@@ -892,13 +809,9 @@ public class Tensor3 {
 	public double[][] toArray() {
 
 		return new double[][] {
-
 				{ xx, xy, xz },
-
 				{ yx, yy, yz },
-
 				{ zx, zy, zz }
-
 		};
 
 	}
@@ -913,15 +826,10 @@ public class Tensor3 {
 	public String toString() {
 
 		return String.format(
-
 				"| %.6e %.6e %.6e |\n" + "| %.6e %.6e %.6e |\n" + "| %.6e %.6e %.6e |",
-
 				xx, xy, xz,
-
 				yx, yy, yz,
-
 				zx, zy, zz
-
 		);
 
 	}
